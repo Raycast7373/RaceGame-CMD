@@ -146,8 +146,7 @@ set eYmin=-1
 set eYmax=5
 color e
 :roadgame
-echo cls
-@echo on
+cls
 
 set r1=%random%
 if %eYaxis% EQU 0 ( set eYaxis=-1 ) Else ( if %r1% LSS 6915 ( if not %eXaxis% LEQ %eXmin% ( set /A eXaxis=eXaxis-1 ) Else ( set /A eXaxis=eXaxis+1) ) ELSE ( if %r1% GTR 25852 ( if not %eXaxis% GEQ %eXmax% ( set /A eXaxis=eXaxis+1 ) Else ( set /A eXaxis=eXaxis-1) ) Else ( if not %eYaxis% LEQ %eYmin% ( set /A eYaxis=eYaxis-1 ) Else ( set /A eYaxis=eYmin) ) ) )
