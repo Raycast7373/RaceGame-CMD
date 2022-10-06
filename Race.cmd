@@ -1,4 +1,10 @@
 @echo off
+IF %1.==. (
+start "baguette" /MAX "%~dpnx0" true
+exit
+)
+:DaGame
+@echo off
 set SCORE=0
 set ECHOSTAT=OFF
 set COORDINATESTAT=OFF
@@ -99,7 +105,6 @@ goto DATA
 set CHOSENOPTION=MENUA
 goto SETTINGS
 :MENUA
-cls
 set AITEST=0
 set SCORE=0
 if not exist Savedata\ ( mkdir Savedata )
@@ -107,7 +112,7 @@ if %TESTMODE% EQU 1 ( goto TESTMODEMENU )
 if /I "%ECHOSTAT%"=="ON" ( @ECHO ON ) Else ( @ECHO OFF )
 set AITEST=0
 set SCORE=0
-call :menuFUNCTION1 "RaceGame" a "MAIN MENU"
+call :menuFUNCTION1 "RaceGame" a "MAIN MENU" 
 call :menuFUNCTION2 MENUA True Start START Highscores SCORES TESTMODE TESTMODE Exit EXIT
 goto MENU
 
