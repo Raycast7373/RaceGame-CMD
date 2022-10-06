@@ -102,31 +102,13 @@ goto SETTINGS
 cls
 set AITEST=0
 set SCORE=0
-color a
 if not exist Savedata\ ( mkdir Savedata )
 if %TESTMODE% EQU 1 ( goto TESTMODEMENU )
 if /I "%ECHOSTAT%"=="ON" ( @ECHO ON ) Else ( @ECHO OFF )
 set AITEST=0
 set SCORE=0
-title MAIN MENU
-@ECHO  ----------------------------
-@ECHO  		RaceGame
-@ECHO  ----------------------------
-@ECHO. 
-@ECHO.
-@ECHO  1) Start
-@ECHO  2) Highscores
-@ECHO.
-@ECHO  ----------------------------
-@ECHO  3) TESTMODE
-@ECHO  4) Exit
-@ECHO  ----------------------------
-@ECHO.
-@choice /c 1234 /M "Which thing do you want to run? [1-4]: " /n 
-if errorlevel 4 goto EXIT
-if errorlevel 3 goto TESTMODE
-if errorlevel 2 goto SCORES
-if errorlevel 1 goto START
+call :menuFUNCTION1 "RaceGame" a "MAIN MENU"
+call :menuFUNCTION2 MENUA True Start START Highscores SCORES TESTMODE TESTMODE Exit EXIT
 goto MENU
 
 :TESTMODE
@@ -987,3 +969,86 @@ if %ENEMYVERTICAL% GTR %ROADLENGTH% ( set /a eYaxis=ROADLENGTH ) else ( if %ENEM
 if %PLAYERVERTICAL% GTR %Ymax% ( set /a Yaxis=Ymax-2 ) else ( if %PLAYERVERTICAL% LSS %Ymin% ( set /a Yaxis=Ymin ) else ( set /a Yaxis=PLAYERVERTICAL ) )
 echo Done!!
 goto AUTOBACK
+
+
+:menuFUNCTION1
+setlocal
+set Title=%~1
+set Color=%2
+set TitleBar=%~3
+cls
+title %TitleBar%
+color %Color%
+@ECHO ----------------------------
+@ECHO -----%Title%
+@ECHO ----------------------------
+echo.
+endlocal
+exit /B
+:menuFUNCTION2
+setlocal enableextensions
+set PrevMenu=%1
+set NoBack=%2
+Shift & Shift
+set Optiona1=%~1
+set Optionb1=%~2
+set Optiona2=%~3
+set Optionb2=%~4
+set Optiona3=%~5
+set Optionb3=%~6
+set Optiona4=%~7
+set Optionb4=%~8
+set Optiona5=%~9
+Shift & Shift & Shift & Shift & Shift & Shift & Shift & Shift & Shift
+set Optionb5=%~1
+set Optiona6=%~2
+set Optionb6=%~3
+set Optiona7=%~4
+set Optionb7=%~5
+set Optiona8=%~6
+set Optionb8=%~7
+@ECHO.
+@ECHO.
+if not "%Optiona1%" == "" ( set /a count=1 & echo 1^) %Optiona1% & if not "%Optiona2%" == "" ( set /a count=2 & echo 2^) %Optiona2% & if not "%Optiona3%" == "" ( set /a count=3 & echo 3^) %Optiona3% & if not "%Optiona4%" == "" ( set /a count=4 & echo 4^) %Optiona4% & if not "%Optiona5%" == "" ( set /a count=5 & echo 5^) %Optiona5% & if not "%Optiona6%" == "" ( set /a count=6 & echo 6^) %Optiona6% & if not "%Optiona7%" == "" ( set /a count=7 & echo 7^) %Optiona7% & if not "%Optiona8%" == "" ( set /a count=8 & echo 1^) %Optiona1% ) else ( set Optionb8=MenuItemChooser )) else ( set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb3=MenuItemChooser & set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb2=MenuItemChooser & set Optionb3=MenuItemChooser & set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( cls & echo Empty menu! & goto error )
+if not %NoBack% == True (
+@ECHO.
+@ECHO ----------------------------
+@ECHO 9^) Back
+@ECHO ----------------------------
+@ECHO.
+) else ( @ECHO. )
+set counter=1
+set Choice=1
+:MenuChoiceLoop
+set /a counter=counter+1
+set Choice=%Choice%%counter%
+if %counter% equ %count% ( goto EndOfMenuChoiceLoop )
+goto MenuChoiceLoop
+:EndOfMenuChoiceLoop
+if not %NoBack% == True ( set string="Which thing do you want to run? [1-%count%, 9]: " ) else ( set string="Which thing do you want to run? [1-%count%]: " )
+:MenuItemChooser
+choice /c 123456789 /M %string% /n 
+if errorlevel 9 ( if not %NoBack% == True ( cls & endlocal & goto %PrevMenu% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 8 ( if not %Optionb8% == MenuItemChooser ( cls & endlocal & goto %Optionb8% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 7 ( if not %Optionb7% == MenuItemChooser ( cls & endlocal & goto %Optionb7% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 6 ( if not %Optionb6% == MenuItemChooser ( cls & endlocal & goto %Optionb6% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 5 ( if not %Optionb5% == MenuItemChooser ( cls & endlocal & goto %Optionb5% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 4 ( if not %Optionb4% == MenuItemChooser ( cls & endlocal & goto %Optionb4% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 3 ( if not %Optionb3% == MenuItemChooser ( cls & endlocal & goto %Optionb3% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 2 ( if not %Optionb2% == MenuItemChooser ( cls & endlocal & goto %Optionb2% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 1 ( if not %Optionb1% == MenuItemChooser ( cls & endlocal & goto %Optionb1% ) else ( goto MenuItemChooser2 ) )
+goto MenuItemChooser2
+:MenuItemChooser2
+choice /c 123456789 /n 
+if errorlevel 9 ( if not %NoBack% == True ( cls & endlocal & goto %PrevMenu% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 8 ( if not %Optionb8% == MenuItemChooser ( cls & endlocal & goto %Optionb8% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 7 ( if not %Optionb7% == MenuItemChooser ( cls & endlocal & goto %Optionb7% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 6 ( if not %Optionb6% == MenuItemChooser ( cls & endlocal & goto %Optionb6% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 5 ( if not %Optionb5% == MenuItemChooser ( cls & endlocal & goto %Optionb5% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 4 ( if not %Optionb4% == MenuItemChooser ( cls & endlocal & goto %Optionb4% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 3 ( if not %Optionb3% == MenuItemChooser ( cls & endlocal & goto %Optionb3% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 2 ( if not %Optionb2% == MenuItemChooser ( cls & endlocal & goto %Optionb2% ) else ( goto MenuItemChooser2 ) )
+if errorlevel 1 ( if not %Optionb1% == MenuItemChooser ( cls & endlocal & goto %Optionb1% ) else ( goto MenuItemChooser2 ) )
+goto MenuItemChooser2
+endlocal
+exit /B
