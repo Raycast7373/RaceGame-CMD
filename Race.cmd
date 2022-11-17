@@ -108,7 +108,6 @@ goto SETTINGS
 set AITEST=0
 set SCORE=0
 if not exist Savedata\ ( mkdir Savedata )
-if %TESTMODE% EQU 1 ( goto TESTMODEMENU )
 if /I "%ECHOSTAT%"=="ON" ( @ECHO ON ) Else ( @ECHO OFF )
 set AITEST=0
 set SCORE=0
@@ -118,52 +117,20 @@ goto MENU
 
 :TESTMODE
 cls
-color b
 echo enabling testmode...
 set TESTMODE=1
 goto TESTMODEMENU
 
 :TESTMODEMENU
 cls
-title MAIN MENU (TESTMODE!!)
 if /I "%ECHOSTAT%"=="ON" ( @ECHO ON ) Else ( @ECHO OFF )
-color b
-@ECHO  ----------------------------
-@ECHO  		Race Thing (TESTMODE!)
-@ECHO  ----------------------------
-@ECHO. 
-@ECHO.
-@ECHO  1) Start
-@ECHO  2) Scores
-@ECHO.
-@ECHO  3) RoadTester
-@ECHO  4) AI Test
-@ECHO  5) GAMEOVER screen
-@ECHO.
-@ECHO  ---------Debug Tool---------
-@ECHO  6) Debug Option Menu
-@ECHO  ----------------------------
-@ECHO.
-@ECHO  ----------------------------
-@ECHO  7) Exit Test Mode
-@ECHO  8) Exit Game
-@ECHO  ----------------------------
-@ECHO.
-@choice /c 12345678 /M "Which thing do you want to run? [1-8]: " /n 
-if errorlevel 8 goto EXIT
-if errorlevel 7 goto DISABLETESTMODE
-if errorlevel 6 goto DebugOptions
-if errorlevel 5 goto GAMEOVER
-if errorlevel 4 goto AITEST
-if errorlevel 3 goto ROADTESTER
-if errorlevel 2 goto SCORES
-if errorlevel 1 goto START
+call :menuFUNCTION1 "RaceGame (TESTMODE)" b "TEST MENU" 
+call :menuFUNCTION2 MENUA True Start START Highscores SCORES RoadTester ROADTESTER "Ai Test" AITEST "Gameover Screen" GAMEOVER "Debug Option Menu" DebugOptions "Exit TestMode" DISABLETESTMODE "Exit Game" EXIT
 goto TESTMODEMENU
 
 :DebugOptions
 cls
 title Debug Options
-color b
 if /I "%ECHOSTAT%"=="ON" ( @ECHO ON ) Else ( @ECHO OFF )
 color b
 @ECHO  ----------------------------
@@ -1014,7 +981,7 @@ set Optiona8=%~6
 set Optionb8=%~7
 @ECHO.
 @ECHO.
-if not "%Optiona1%" == "" ( set /a count=1 & echo 1^) %Optiona1% & if not "%Optiona2%" == "" ( set /a count=2 & echo 2^) %Optiona2% & if not "%Optiona3%" == "" ( set /a count=3 & echo 3^) %Optiona3% & if not "%Optiona4%" == "" ( set /a count=4 & echo 4^) %Optiona4% & if not "%Optiona5%" == "" ( set /a count=5 & echo 5^) %Optiona5% & if not "%Optiona6%" == "" ( set /a count=6 & echo 6^) %Optiona6% & if not "%Optiona7%" == "" ( set /a count=7 & echo 7^) %Optiona7% & if not "%Optiona8%" == "" ( set /a count=8 & echo 1^) %Optiona1% ) else ( set Optionb8=MenuItemChooser )) else ( set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb3=MenuItemChooser & set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb2=MenuItemChooser & set Optionb3=MenuItemChooser & set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( cls & echo Empty menu! & goto error )
+if not "%Optiona1%" == "" ( set /a count=1 & echo 1^) %Optiona1% & if not "%Optiona2%" == "" ( set /a count=2 & echo 2^) %Optiona2% & if not "%Optiona3%" == "" ( set /a count=3 & echo 3^) %Optiona3% & if not "%Optiona4%" == "" ( set /a count=4 & echo 4^) %Optiona4% & if not "%Optiona5%" == "" ( set /a count=5 & echo 5^) %Optiona5% & if not "%Optiona6%" == "" ( set /a count=6 & echo 6^) %Optiona6% & if not "%Optiona7%" == "" ( set /a count=7 & echo 7^) %Optiona7% & if not "%Optiona8%" == "" ( set /a count=8 & echo 8^) %Optiona8% ) else ( set Optionb8=MenuItemChooser )) else ( set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb3=MenuItemChooser & set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( set Optionb2=MenuItemChooser & set Optionb3=MenuItemChooser & set Optionb4=MenuItemChooser & set Optionb5=MenuItemChooser & set Optionb6=MenuItemChooser & set Optionb7=MenuItemChooser & set Optionb8=MenuItemChooser )) else ( cls & echo Empty menu! & goto error )
 if not %NoBack% == True (
 @ECHO.
 @ECHO ----------------------------
